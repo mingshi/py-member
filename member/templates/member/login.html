@@ -21,7 +21,9 @@
 
                 <label class="control-label" for="verify">Verify</label>
                 <div class="controls">
-                    <input type="text" style="width:100px;" name="verify" id="verify" />
+                    <input type="text" style="width:130px;" name="verify" id="verify" />
+                    <img src="/captcha" onclick="this.src='/captcha?' +
+                    Math.floor(Math.random()*100+1)" title="看不清?点击换一张" style="width:80px;" />
                     <p>
                 </div>
 

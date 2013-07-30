@@ -4,6 +4,9 @@ ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 ENV="Development"
 
+SESSION_KEY_CAPTCHA = 'captcha_member'
+SECRET_KEY = "adeaz%MemberSS(*U(*HD&$#"
+
 class Config(object):
     HOST='0.0.0.0'
     PORT=8818

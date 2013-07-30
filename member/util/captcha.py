@@ -27,5 +27,11 @@ def create() :
         noise(),
         smooth()
     ])
-    image = captcha_image(random.sample(string.uppercase + string.digits, 4))
-    return image
+
+    _chars = string.uppercase + string.digits
+    chars = random.sample(_chars, 4)
+    image = captcha_image(chars)
+    result = {}
+    result['chars'] = chars
+    result['image'] = image
+    return result
