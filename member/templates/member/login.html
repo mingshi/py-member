@@ -35,4 +35,23 @@
 {% endblock %}
 
 {% block footer_script %}
+    <script src="{{ url_for('static', filename='jquery.colorAnimations.js') }}"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#login').click(function(){
+                if ($("#username").val() == "") {
+                    $("#username").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor:"#FFFFFF" }, 1000);
+                } else if ($("#passwd").val() == "") {
+                    $("#passwd").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor:"#FFFFFF" }, 1000);
+                } else if ($("#verify").val() == "") {
+                    $("#verify").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor:"#FFFFFF" }, 1000);
+                } else {
+                    
+                }
+            });
+        });
+    </script>
 {% endblock %}

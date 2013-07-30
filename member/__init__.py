@@ -11,11 +11,12 @@ if os.path.exists(app.config['ROOT_PATH'] + "/env.py"):
 
 app.config.from_object("config.%sConfig" % (app.config['ENV']) )
 
-from member.views import index, login
+from member.views import index, login, captcha
 from member.db.db import db_session
 
 app.register_blueprint(index.mod)
 app.register_blueprint(login.mod)
+app.register_blueprint(captcha.mod)
 
 @app.route("/version")
 def hello():
