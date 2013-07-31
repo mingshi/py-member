@@ -8,6 +8,9 @@ SESSION_KEY_CAPTCHA = 'captcha_member'
 SECRET_KEY = "adeaz%MemberSS(*U(*HD&$#"
 LOGIN_SESSION_NAME = "adeazMemberLogin"
 
+USER_STATUS_OK = 0
+USER_STATUS_DELETE = 1
+
 class Config(object):
     HOST='0.0.0.0'
     PORT=8818

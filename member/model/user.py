@@ -13,6 +13,9 @@ class User(Model):
     status = Column(Integer)
     login_time = Column(String(19))
     login_ip = Column(String(15))
+    is_admin = Column(Integer)
+    position = Column(Integer)
+    department = Column(Integer)
 
     def __init__(self, username, realname, password, mobile, email, status, login_time, login_ip):
         self.username = username
@@ -23,6 +26,9 @@ class User(Model):
         self.status = status
         self.login_time = login_time
         self.login_ip = login_ip
+        is_admin = Column(Integer)
+        position = Column(Integer)
+        department = Column(Integer)
 
     def __repr__(self):
         return '<User %r' % (self.username + ":" + self.realname)

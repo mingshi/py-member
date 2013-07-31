@@ -5,6 +5,7 @@ from member.db.db import db_session
 import json
 from member.model import *
 from member import app
+import time
 
 mod = Blueprint("login", __name__)
 
@@ -17,7 +18,7 @@ def login():
         return redirect(url_for("index.index"))
 
 
-@mod.route('/do_login', methods=['GET','POST'])
+@mod.route('/do_login', methods=['POST'])
 def do_login():
     result = {}
     if not request.form.has_key('username') :
@@ -55,10 +56,17 @@ def do_login():
         elif not password == _user.password :
             result['code'] = 107
             result['msg'] = 'password error!'
+        elif _user.status == app.config['USER_STATUS_DELETE'] :
+            result['code'] = 109
+            result['msg'] = 'user has been denied!'
         else :
+            _user.login_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) 
+            db_session.commit()
             key = app.config['LOGIN_SESSION_NAME']
             session["'" + key + "'"] = username
             session['adeazmember_realname'] = _user.realname
+            if _user.is_admin == 1 :
+                session['member_is_admin'] = 1
             result['code'] = 0
             result['msg'] = 'login success!'
     return json.dumps(result)
@@ -68,4 +76,7 @@ def logout() :
     key = app.config['LOGIN_SESSION_NAME']
     session.pop("'" + key + "'", None)
     session.pop('adeazmember_realname', None)
+    if 'member_is_admin' in session :
+        session.pop('member_is_admin', None)
+    
     return redirect('/')

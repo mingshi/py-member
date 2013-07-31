@@ -1,1 +1,47 @@
 {% extends "layout.html" %}
+
+{% block main %}
+<div class="alert alert-info"> 互众名人堂(排名不分先后)： 
+    {% if session.member_is_admin and session.member_is_admin == 1 %}    
+        <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/add_member">添加名人</a>
+    {% endif %}
+</div>
+
+<div class="well">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>邮箱</th>
+                <th>职务</th>
+                <th>部门</th>
+                {% if session.member_is_admin and session.member_is_admin == 1 %}
+                <th>操作</th>
+                {% endif %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.realname }}</td>
+                <td>{{ user.mobile }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.position }}</td>
+                <td>{{ user.department }}</td>
+                {% if session.member_is_admin and session.member_is_admin == 1 %}
+                <td>
+                    <button class="btn btn-mini btn-info"><i class="icon-edit"></i>编辑</button>
+                    <button class="btn btn-mini btn-danger"><i class="icon-warning-sign"></i>删除</button>
+                </td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+
+
+{% endblock %}

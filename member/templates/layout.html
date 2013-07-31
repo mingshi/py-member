@@ -23,8 +23,14 @@
     <div class="navbar-inner">
         <div class="container">
             <a class="brand" href="/">Home</a>
+            {% if session.member_is_admin and session.member_is_admin == 1 %}
             <div class="nav-collapse">
+                <ul class="nav">
+                    <li><a href="/position">职位管理</a></li>
+                    <li><a href="/department">部门管理</a></li>
+                </ul>
             </div>
+            {% endif %}
             <div class="brand" style="float:right;">
                 Hello!
                 {% if not session.adeazmember_realname %}
