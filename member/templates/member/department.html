@@ -24,12 +24,35 @@
                 <td>{{ department.id }}</td>
                 <td>{{ department.name }}</td>
                 <td>
-                    <button class="btn btn-mini btn-info"><i class="icon-edit"></i>编辑</button>
-                    <button class="btn btn-mini btn-danger"><i class="icon-warning-sign"></i>删除</button>
+                    <a class="btn btn-mini btn-info edit" href="/department/edit-{{ department.id }}"><i class="icon-edit"></i>编辑</a>
+                    <a class="btn btn-mini btn-danger ok" department_id="{{ department.id }}" title="{{ department.name }}"><i class="icon-warning-sign"></i>删除</a>
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
+{% endblock %}
+
+{% block footer_script %}
+<script type="text/javascript">
+    $(function(){
+        $(".ok").click(function(){
+            if (! confirm('Are you sure to delete' + $(this).attr('title') + '?')) {
+                return false;
+            }
+            
+            var id = $(this).attr('department_id');
+            $.ajax({
+                    url : "/department/del-" + id,
+                    type : "post",
+                    dataType : "json",
+                    }).done(function(result){
+                        if (result.code == 0) {
+                            window.location.reload();
+                        }
+                    });
+        });
+    });
+</script>
 {% endblock %}
