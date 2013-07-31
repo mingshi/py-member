@@ -6,6 +6,11 @@
 <div class="well">
     <form class="form-horizontal">
         <fieldset>
+            <legend>Sign In</legend>
+            <div id="login_notice" style="display:none;" class="alert">
+                <button data-dismiss="alert" class="close">x</button>
+                <span id="login_msg"> </span>
+            </div>
             <div class="control-group">
                 <label class="control-label" for="username">UserName</label>
                 <div class="controls">
@@ -38,6 +43,7 @@
 
 {% block footer_script %}
     <script src="{{ url_for('static', filename='jquery.colorAnimations.js') }}"></script>
+    <script src="{{ url_for('static', filename='jquery.md5.js') }}"></script>
     <script type="text/javascript">
         $(function(){
             $('#login').click(function(){
@@ -51,7 +57,23 @@
                     $("#verify").animate({ backgroundColor: "#FFB5B5" }, 500)
                             .animate({ backgroundColor:"#FFFFFF" }, 1000);
                 } else {
-                    
+                    var username = $("#username").val();
+                    var password = $.md5($("#passwd").val());
+                    var verify = $("#verify").val();
+
+                    $.ajax({
+                            url : "/do_login",
+                            dataType : "json",
+                            type : "post",
+                            data : { 'username' : username, 'password' : password, 'verify' : verify }
+                        }).done(function(result){
+                                if (result.code != 0) {
+                                    $("#login_msg").html(result.msg);
+                                    $("#login_notice").show();
+                                } else {
+                                    window.location.href='/';
+                                }
+                            });
                 }
             });
         });

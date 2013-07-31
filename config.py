@@ -6,6 +6,7 @@ ENV="Development"
 
 SESSION_KEY_CAPTCHA = 'captcha_member'
 SECRET_KEY = "adeaz%MemberSS(*U(*HD&$#"
+LOGIN_SESSION_NAME = "adeazMemberLogin"
 
 class Config(object):
     HOST='0.0.0.0'

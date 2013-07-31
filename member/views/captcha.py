@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Blueprint, render_template, request, Response, redirect, url_for, session
+from flask import Blueprint, Response, session
 from member.util.captcha import *
 import StringIO
 from member import app
@@ -14,7 +14,6 @@ def captcha():
     image = res['image']
     SESSION_KEY_CAPTCHA = app.config['SESSION_KEY_CAPTCHA']
     session["'" + SESSION_KEY_CAPTCHA + "'"] = res['chars']
-    print(session["'" + SESSION_KEY_CAPTCHA + "'"])
     buf = StringIO.StringIO()
     image.save(buf,'png',quality=70)
     return Response(buf.getvalue(), mimetype='image/png')

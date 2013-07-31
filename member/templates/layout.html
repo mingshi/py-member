@@ -25,7 +25,15 @@
             <a class="brand" href="/">Home</a>
             <div class="nav-collapse">
             </div>
-            <a class="brand" style="float:right;">Hello! xxx</a>
+            <div class="brand" style="float:right;">
+                Hello!
+                {% if not session.adeazmember_realname %}
+                    浪子
+                {% else %}
+                    {{ session.adeazmember_realname }}
+                    <a href="/logout" style="font-size:12px">Logout</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
