@@ -11,3 +11,17 @@ create table user (
     PRIMARY KEY (`id`),
     UNIQUE KEY `username` (`username`)
 ) engine=innodb default charset utf8;
+
+create table department (
+    `id` int not null auto_increment,
+    `name` varchar(50) not null default '' comment '部门名称',
+    PRIMARY KEY (`id`)
+) engine=innodb default charset utf8;
+
+create table position (
+    `id` int not null auto_increment,
+    `name` varchar(50) not null default '' comment '职位名称',
+    `did` int not null default '0' comment '所属部门id',
+    PRIMARY KEY (`id`),
+    KEY `did` (`did`)
+) engine=innodb default charset utf8;

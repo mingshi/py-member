@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+
+{% block title %}departments{% endblock %}
+
+{% block main %}
+<div class="alert alert-info"> 互众部门机构： 
+    {% if session.member_is_admin and session.member_is_admin == 1 %}    
+        <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/add_department">添加部门</a>
+    {% endif %}
+</div>
+
+<div class="well">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for department in departments %}
+            <tr>
+                <td>{{ department.id }}</td>
+                <td>{{ department.name }}</td>
+                <td>
+                    <button class="btn btn-mini btn-info"><i class="icon-edit"></i>编辑</button>
+                    <button class="btn btn-mini btn-danger"><i class="icon-warning-sign"></i>删除</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

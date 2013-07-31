@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+
+{% block title %}Out of your purview{% endblock %}
+
+{% block main %}
+<div>
+    <img src="{{ url_for('static', filename='403.jpg') }}" width="300px;" />
+    <span style="margin-left:100px;color:#4183C4;font-size:30px;font-family:Consolas,'Liberation Mono',Courier,monospace">
+        You have no permission.
+    </span>
+</div>
+{% endblock %}
