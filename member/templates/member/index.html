@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block main %}
-<div class="alert alert-info"> 互众名人堂(排名不分先后)： 
+<div class="alert alert-info"> 名人堂(排名不分先后)： 
     {% if session.member_is_admin and session.member_is_admin == 1 %}    
         <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/add_member">添加名人</a>
     {% endif %}

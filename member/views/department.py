@@ -16,7 +16,7 @@ def department() :
     else :
         return redirect('/403')
 
-@mod.route('/add_department')
+@mod.route('/department/add')
 def add_department() :
     if check_admin() :
         return render_template('member/add_department.html')
@@ -31,7 +31,7 @@ def do_add() :
             result['code'] = 101
             result['msg'] = 'name must be required.'
         else :
-            name = request.form['name'].strip().encode('utf8')
+            name = request.form['name'].strip()
             _department = db_session.query(Department).filter_by(name = name).first()
             if _department :
                 result['code'] = 102
@@ -79,7 +79,7 @@ def do_edit_department() :
             result['code'] = 102
             result['msg'] = 'name must be required.'
         else :
-            name = request.form['name'].strip().encode('utf8')
+            name = request.form['name'].strip()
             id = int(request.form['id'].strip())
             _department = db_session.query(Department).filter_by(id = id).first()
             if _department :

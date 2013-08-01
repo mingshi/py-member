@@ -3,9 +3,9 @@
 {% block title %}departments{% endblock %}
 
 {% block main %}
-<div class="alert alert-info"> 互众部门机构： 
+<div class="alert alert-info"> 部门机构： 
     {% if session.member_is_admin and session.member_is_admin == 1 %}    
-        <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/add_department">添加部门</a>
+        <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/department/add">添加部门</a>
     {% endif %}
 </div>
 

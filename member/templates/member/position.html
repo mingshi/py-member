@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}positions{% endblock %}
+
+{% block main %}
+<div class="alert alert-info"> 职位列表：
+    {% if session.member_is_admin and session.member_is_admin == 1 %}
+    <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/position/add">添加职位</a>
+    {% endif %}
+</div>
+
+<div class="well">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>名称</th>
+                <th>所属部门</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for position in positions %}
+            <tr>
+                <td>{{ position.id }}</td>
+                <td>{{ position.name }}</td>
+                <td>{{ position.dname }}</td>
+                <td>
+                    <a class="btn btn-mini btn-info edit" href="/position/edit-{{ position.id }}"><i class="icon-edit"></i>编辑</a>
+                    <a class="btn btn-mini btn-danger ok" position_id="{{ position.id }}" title="{{ position.name }}"><i class="icon-warning-sign"></i>删除</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+<script type="text/javascript">
+    $(function(){
+        $(".ok").click(function(){
+                if (! confirm('Are you sure to delete' + $(this).attr('title') + '?')) {
+                    return false;
+                }
+                
+                var id = $(this).attr("position_id");
+                $.ajax({
+                        url : "/position/del-" + id,
+                        dataType : "json",
+                        type : "post"
+                        }).done(function(result){
+                                if (result.code == 0) {
+                                    window.location.reload();
+                                }
+                            });
+            });
+    });
+</script>
+{% endblock %}

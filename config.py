@@ -22,4 +22,4 @@ class ProductionConfig(Config):
 class DevelopmentConfig(Config):
     PORT=3888
     DEBUG=True
-    DB_URI="mysql+oursql://root:@127.0.0.1/member"
+    DB_URI="mysql+oursql://root:@127.0.0.1/member?charset=utf8"

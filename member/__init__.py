@@ -24,6 +24,10 @@ app.register_blueprint(department.mod)
 def page_not_found(error):
     return render_template('member/404.html')
 
+@app.errorhandler(405)
+def page_not_found(error):
+    return render_template('member/405.html')
+
 @app.route("/version")
 def hello():
     return "0.1"

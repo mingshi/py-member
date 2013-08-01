@@ -61,6 +61,7 @@ def do_login():
             result['msg'] = 'user has been denied!'
         else :
             _user.login_time = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(time.time())) 
+            _user.login_ip = request.remote_addr
             db_session.commit()
             key = app.config['LOGIN_SESSION_NAME']
             session["'" + key + "'"] = username
