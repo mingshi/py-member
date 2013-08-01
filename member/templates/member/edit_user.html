@@ -69,3 +69,24 @@
     </form>
 </div>
 {% endblock %}
+
+{% block footer_script %}
+<script src="{{ url_for('static', filename='jquery.colorAnimations.js') }}"></script>
+<script type="text/javascript">
+    $(function(){
+            $("#ok").click(function(){
+
+                if ($("#realname").val() == "" || $("#realname").val() == "undefined") {
+                    $("#realname").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                } else if (!$("#mobile").val().match(/^1[3|4|5|8][0-9]\d{8}$/)) {
+                    $("#mobile").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                } else if (!$("#email").val().match(/^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$/)) {
+                    $("#email").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                }
+            });
+    });
+</script>
+{% endblock %}
