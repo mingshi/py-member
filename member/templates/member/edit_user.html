@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block main %}
+<div class="well">
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Edit User</legend>
+            <div id="user_add_notice" style="display:none;" class="alert">
+                <button data-dismiss="alert" class="close">x</button>
+                <span id="user_add_msg"> </span>
+            </div>
+        </fieldset>
+
+        <div class="control-group">
+            <label class="control-label" for="realname">User RealName:</label>
+            <div class="controls">
+                <input type="text" name="realname" id="realname" value="{{ user.realname }}" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="phone">Phone:</label>
+            <div class="controls">
+                <input type="text" name="mobile" id="mobile" value="{{ user.mobile }}" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="email">Email:</label>
+            <div class="controls">
+                <input type="text" name="email" id="email" value="{{ user.email }}" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="department">Department:</label>
+            <div class="controls">
+                <select id="department" name="department">
+                    <option value="0">请选择部门</option>
+                    {% for department in departments %}
+                    <option value="{{ department.id }}" {% if user.department == department.id %} selected {% endif %}>{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="position">Position:</label>
+            <div class="controls">
+                <select id="position" name="position">
+                    {% if position %}
+                    <option value="{{ position.id }}">{{ position.name }}</option>
+                    {% else %}
+                    <option value="0">请选择职位</option>
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="controls">
+                <input type="hidden" value="{{ user.id }}" name="id" id="id" />
+                <button type="button" id="ok" class="btn btn-primary">Edit</button>
+            </div>
+        </div>
+
+    </form>
+</div>
+{% endblock %}

@@ -4,6 +4,7 @@ from flask import Blueprint, render_template, request, url_for, redirect, sessio
 from member import app
 from member.db.db import db_session
 from member.model import *
+from member.util.auth import *
 
 mod = Blueprint("index", __name__)
 
@@ -21,3 +22,20 @@ def index():
         return render_template("member/index.html", users = users) 
     else :
         return redirect("/login")
+
+@mod.route('/user/edit-<id>', methods=['POST','GET'])
+def edit_user(id) :
+    if check_admin() :
+        id = int(id)
+        _user = db_session.query(User).filter_by(id = id).first()
+        _departments = db_session.query(Department).all()
+        _positions = db_session.query(Position).all()
+        _position = db_session.query(Position).filter_by(id = _user.position).first()
+
+        if not _user :
+            return redirect('/403')
+        else :
+            return render_template('member/edit_user.html', user = _user,
+                    departments = _departments, positions = _positions, position = _position)
+    else :
+        return redirect('/403')

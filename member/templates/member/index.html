@@ -31,8 +31,8 @@
                 <td>{{ user.department }}</td>
                 {% if session.member_is_admin and session.member_is_admin == 1 %}
                 <td>
-                    <button class="btn btn-mini btn-info"><i class="icon-edit"></i>编辑</button>
-                    <button class="btn btn-mini btn-danger"><i class="icon-warning-sign"></i>删除</button>
+                    <a class="btn btn-mini btn-info" href="/user/edit-{{ user.id }}"><i class="icon-edit"></i>编辑</a>
+                    <a class="btn btn-mini btn-danger" user_id="{{ user.id }}" title="{{ user.realname }}"><i class="icon-warning-sign"></i>删除</a>
                 </td>
                 {% endif %}
             </tr>
