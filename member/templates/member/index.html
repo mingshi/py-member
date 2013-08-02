@@ -27,8 +27,8 @@
                 <td>{{ user.realname }}</td>
                 <td>{{ user.mobile }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.position }}</td>
-                <td>{{ user.department }}</td>
+                <td>{{ user.pname }}</td>
+                <td>{{ user.dname }}</td>
                 {% if session.member_is_admin and session.member_is_admin == 1 %}
                 <td>
                     <a class="btn btn-mini btn-info" href="/user/edit-{{ user.id }}"><i class="icon-edit"></i>编辑</a>

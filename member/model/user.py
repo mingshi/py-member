@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from member.db.db import Model
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
 
 class User(Model):
     __tablename__ = 'user'
@@ -14,8 +14,8 @@ class User(Model):
     login_time = Column(String(19))
     login_ip = Column(String(15))
     is_admin = Column(Integer)
-    position = Column(Integer)
-    department = Column(Integer)
+    position = Column(Integer, ForeignKey('position.id'), nullable=False)
+    department = Column(Integer, ForeignKey('department.id'), nullable=False)
 
     def __init__(self, username, realname, password, mobile, email, status, login_time, login_ip):
         self.username = username

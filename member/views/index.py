@@ -21,7 +21,12 @@ def index():
         for status in db_session.query(User.status).filter_by(username = session["'" + key + "'"]).first():
             if status == 1 :
                 return redirect('/logout')
-        users = db_session.query(User).filter_by(status = 0).all()
+        _users = db_session.query(User).join(User.departments, User.positions).values(User.id, User.realname, User.email, User.mobile, Position.name, Department.name)
+        users = []
+        for id, realname, email, mobile, name, dname in _users :
+            users.append({'id' : id, 'realname' : realname, 'email' : email,
+                'mobile' : mobile, 'pname' : name, 'dname' : dname})
+        #users = db_session.query(User).filter_by(status = 0).all()
         return render_template("member/index.html", users = users) 
     else :
         return redirect("/login")
