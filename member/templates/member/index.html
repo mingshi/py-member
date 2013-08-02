@@ -3,7 +3,7 @@
 {% block main %}
 <div class="alert alert-info"> 名人堂(排名不分先后)： 
     {% if session.member_is_admin and session.member_is_admin == 1 %}    
-        <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/add_member">添加名人</a>
+        <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/user/add">添加名人</a>
     {% endif %}
 </div>
 
@@ -16,6 +16,7 @@
                 <th>邮箱</th>
                 <th>职务</th>
                 <th>部门</th>
+                <th>状态</th>
                 {% if session.member_is_admin and session.member_is_admin == 1 %}
                 <th>操作</th>
                 {% endif %}
@@ -29,10 +30,19 @@
                 <td>{{ user.email }}</td>
                 <td>{{ user.pname }}</td>
                 <td>{{ user.dname }}</td>
+                <td>
+                    {% if user.status == 0 %}
+                    <span class="label label-success">正常</span>
+                    {% elif user.status == 1 %}
+                    <span class="label label-warning">停用</span>
+                    {% endif %}
+                </td>
                 {% if session.member_is_admin and session.member_is_admin == 1 %}
                 <td>
                     <a class="btn btn-mini btn-info" href="/user/edit-{{ user.id }}"><i class="icon-edit"></i>编辑</a>
-                    <a class="btn btn-mini btn-danger" user_id="{{ user.id }}" title="{{ user.realname }}"><i class="icon-warning-sign"></i>删除</a>
+                    {% if not user.is_admin == 1 %}
+                    <a class="btn btn-mini btn-danger del" user_id="{{ user.id }}" title="{{ user.realname }}"><i class="icon-warning-sign"></i>删除</a>
+                    {% endif %}
                 </td>
                 {% endif %}
             </tr>
@@ -41,3 +51,27 @@
     </table>
 </div>
 {% endblock %}
+
+{% block footer_script %}
+<script type="text/javascript">
+    $(".del").click(function(){
+        if (! confirm('Are you sure to delete' + $(this).attr('title') + '?')) {
+            return false;
+        }
+
+        var id = $(this).attr('user_id');
+
+        $.ajax({
+            url : "/user/del-" + id,
+            dataType : "json",
+            type : "post"
+            }).done(function(result) {
+                    if (result.code == 0) {
+                        window.location.reload();
+                    }
+                });
+
+    });
+</script>
+{% endblock %}
+

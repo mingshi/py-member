@@ -21,11 +21,15 @@ def index():
         for status in db_session.query(User.status).filter_by(username = session["'" + key + "'"]).first():
             if status == 1 :
                 return redirect('/logout')
-        _users = db_session.query(User).join(User.departments, User.positions).values(User.id, User.realname, User.email, User.mobile, Position.name, Department.name)
+        _users = db_session.query(User).join(User.departments,
+                User.positions).values(User.id, User.realname, User.email,
+                        User.mobile, Position.name, Department.name, User.status,
+                        User.is_admin)
         users = []
-        for id, realname, email, mobile, name, dname in _users :
+        for id, realname, email, mobile, name, dname, status, is_admin in _users :
             users.append({'id' : id, 'realname' : realname, 'email' : email,
-                'mobile' : mobile, 'pname' : name, 'dname' : dname})
+                'mobile' : mobile, 'pname' : name, 'dname' : dname, 'status' :
+                status, 'is_admin' : is_admin})
         #users = db_session.query(User).filter_by(status = 0).all()
         return render_template("member/index.html", users = users) 
     else :
@@ -103,6 +107,83 @@ def do_edit_user() :
             result['code'] = 0
             result['msg'] = 'edit success.'
         
+        return json.dumps(result)
+    else :
+        return redirect('/403')
+
+@mod.route('/user/add')
+def add_user() :
+    if check_admin() :
+        _departments = db_session.query(Department).all()
+        return render_template('member/add_user.html', departments = _departments) 
+    else :
+        return redirect('/403')
+
+@mod.route('/user/do_add', methods=['POST'])
+def do_add_user() :
+    if check_admin() :
+        result = {}
+        realname = request.form['realname'].strip()
+        username = request.form['username'].strip()
+        password = request.form['password'].strip()
+        mobile = request.form['mobile'].strip()
+        email = request.form['email'].strip()
+        department = int(request.form['department'].strip())
+        position = int(request.form['position'].strip())
+            
+        _user = db_session.query(User).filter_by(username = username).first()
+            
+        if not realname :
+            result['code'] = 101
+            result['msg'] = 'realname must be required.'
+        elif not check_password(password) :
+            result['code'] = 102
+            result['msg'] = 'password must be in 6-20 length.'
+        elif not check_mobile(mobile) :
+            result['code'] = 103
+            result['msg'] = 'mobile must be in 11 length.'
+        elif not check_email(email) :
+            result['code'] = 104
+            result['msg'] = 'email error.'
+        elif department == 0 :
+            result['code'] = 105
+            result['msg'] = 'department must be required.'
+        elif position == 0 :
+            result['code'] = 106
+            result['msg'] = 'position must be required.'
+        elif not username :
+            result['code'] = 107
+            result['msg'] = 'username must be required.'
+        elif _user :
+            result['code'] = 108
+            result['msg'] = 'the username has been exist.'
+        else :
+             user = User(username = username, realname = realname, mobile =
+                     mobile, email = email, department = department, position =
+                     position,status = 0, password =
+                     md5.new(password).hexdigest(), is_admin = 0)
+             db_session.add(user)
+             db_session.commit()
+             result['code'] = 0
+             result['msg'] = 'add success.'
+        return json.dumps(result)
+    else :
+        return redirect('/403')
+
+@mod.route('/user/del-<id>', methods=['POST'])
+def del_user(id) :
+    if check_admin() :
+        result = {}
+        id = int(id)
+        _user = db_session.query(User).filter_by(id = id).first()
+        if not _user :
+            result['code'] = 103
+            result['msg'] = 'invalid id.'
+        else :
+            _user.status = 1
+            db_session.commit()
+            result['code'] = 0
+            result['msg'] = 'del success.'
         return json.dumps(result)
     else :
         return redirect('/403')

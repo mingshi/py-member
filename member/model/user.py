@@ -17,18 +17,16 @@ class User(Model):
     position = Column(Integer, ForeignKey('position.id'), nullable=False)
     department = Column(Integer, ForeignKey('department.id'), nullable=False)
 
-    def __init__(self, username, realname, password, mobile, email, status, login_time, login_ip):
+    def __init__(self, username, realname, password, mobile, email, status, department, position, is_admin):
         self.username = username
         self.realname = realname
         self.password = password
         self.mobile = mobile
         self.email = email
         self.status = status
-        self.login_time = login_time
-        self.login_ip = login_ip
-        is_admin = Column(Integer)
-        position = Column(Integer)
-        department = Column(Integer)
+        self.department = department
+        self.position = position
+        self.is_admin = is_admin
 
     def __repr__(self):
         return '<User %r' % (self.username + ":" + self.realname)

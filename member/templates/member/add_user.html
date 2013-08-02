@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+
+{% block title %}Add User{% endblock %}
+
+{% block main %}
+<div class="well">
+    <form class="form-horizontal">
+        <fieldset>
+            <legend>Add User</legend>
+        </fieldset>
+        <div id="user_add_notice" style="display:none;" class="alert">
+            <button data-dismiss="alert" class="close">x</button>
+            <span id="user_add_msg"> </span>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="username">Username:</label>
+            <div class="controls">
+                <input type="text" id="username" name="username" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="realname">Realname:</label>
+            <div class="controls">
+                <input type="text" id="realname" name="realname" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="password">Password:</label>
+            <div class="controls">
+                <input type="password" id="password" name="password" />
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="mobile">Phone:</label>
+            <div class="controls">
+                <input type="text" id="mobile" name="mobile" />
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="email">Email:</label>
+            <div class="controls">
+                <input type="text" id="email" name="email" />
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label" for="department">Department:</label>
+            <div class="controls">
+                <select id="department" name="department">
+                    <option value="0">请选择部门</option>
+                    {% for department in departments %}
+                        <option value="{{ department.id }}">{{ department.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="position">Position:</label>
+            <div class="controls">
+                <select id="position" name="position">
+                    <option value="0">请选择职位</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <div class="controls">
+                <button type="button" id="ok" class="btn btn-primary">Add</button> 
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block footer_script %}
+<script src="{{ url_for('static', filename='jquery.colorAnimations.js') }}"></script>
+<script type="text/javascript">
+$(function(){
+    $("#department").change(function() {
+        var tmpObjSid = $('#position');
+        tmpObjSid.empty();
+        $('<option value="0">请选择职位</option>').appendTo(tmpObjSid);
+        var did = $("#department").val();
+        if (did != 0 && !isNaN(did)) {
+            $.ajax({
+                    url : "/user/ajax_position",
+                    dataType : "json",
+                    type : "post",
+                    data : {'did' : did}
+                    }).done(function(result) {
+                            $.each(result, function(k,value) {
+                                var op = '<option value="' + value.id + '">' + value.name + '</option>';
+                                $(op).appendTo(tmpObjSid);
+                            });
+                        });
+        }
+
+    });
+
+    $("#ok").click(function() {
+        if ($("#username").val() == "" || $("#username").val() == "undefined") {
+            $("#username").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        } else if ($("#realname").val() == "" || $("#realname").val() == "undefined") {
+            $("#realname").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        } else if (!$("#password").val() || ($("#password").val().length < 6 || $("#password").val().length >20)) {
+            $("#password").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        } else if (!$("#mobile").val().match(/^1[3|4|5|8][0-9]\d{8}$/)) {
+            $("#mobile").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        } else if (!$("#email").val().match(/^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$/)) {
+            $("#email").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        } else if (!$("#department").val() || $("#department").val() == 0) {
+            $("#department").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        } else if (!$("#position").val() || $("#position").val() == 0) {
+            $("#position").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        } else {
+            var username = $("#username").val();
+            var realname = $("#realname").val();
+            var mobile = $("#mobile").val();
+            var email = $("#email").val();
+            var department = $("#department").val();
+            var position = $("#position").val();
+            var password = $("#password").val();
+            
+            $.ajax({
+                    url : "/user/do_add",
+                    dataType : "json",
+                    type : "post",
+                    data : {'realname' : realname, 'username' : username, 'mobile' : mobile, 'email' : email, 'department' : department, 'position' : position,           'password' : password}
+                }).done(function(result){
+                        $("#user_add_msg").html(result.msg);
+                        $("#user_add_notice").show();
+                    }); 
+        } 
+    });
+});
+</script>
+{% endblock %}
