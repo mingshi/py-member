@@ -7,11 +7,25 @@
     <form class="form-horizontal">
         <fieldset>
             <legend>Edit User</legend>
-            <div id="user_add_notice" style="display:none;" class="alert">
+            <div id="user_edit_notice" style="display:none;" class="alert">
                 <button data-dismiss="alert" class="close">x</button>
-                <span id="user_add_msg"> </span>
+                <span id="user_edit_msg"> </span>
             </div>
         </fieldset>
+        
+        <div class="control-group">
+            <label class="control-label" for="uid">UID:</label>
+            <div class="controls">
+                {{ user.id }}
+            </div>
+        </div>
+
+        <div class="control-group">
+            <label class="control-label" for="password">Password:</label>
+            <div class="controls">
+                <input type="PASSWORD" name="password" id="password" />
+            </div>
+        </div>
 
         <div class="control-group">
             <label class="control-label" for="realname">User RealName:</label>
@@ -85,7 +99,57 @@
                 } else if (!$("#email").val().match(/^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$/)) {
                     $("#email").animate({ backgroundColor: "#FFB5B5" }, 500)
                             .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                } else if (!$("#department").val() || $("#department").val() == 0) {
+                    $("#department").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                } else if (!$("#position").val() || $("#position").val() == 0) {
+                    $("#position").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                } else if ($("#password").val() && ($("#password").val().length < 6 || $("#password").val().length >20)) {
+                    $("#password").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor: "#FFFFFF" }, 1000);    
+                } else {
+                    var realname = $("#realname").val();
+                    var mobile = $("#mobile").val();
+                    var email = $("#email").val();
+                    var department = $("#department").val();
+                    var position = $("#position").val();
+                    var password = $("#password").val();
+                    var id = $("#id").val();
+
+                    $.ajax({
+                        url : "/user/do_edit",
+                        dataType : "json",
+                        type : "post",
+                        data : {'id' : id, 'realname' : realname, 'mobile' : mobile, 'email' : email, 'department' : department, 'position' : position, 'password' : password}
+                    }).done(function(result){
+                            $("#user_edit_msg").html(result.msg); 
+                            $("#user_edit_notice").show();
+                        });
+                    
                 }
+
+            });
+            
+            $("#department").change(function() {
+                var tmpObjSid = $('#position');
+                tmpObjSid.empty();
+                $('<option value="0">请选择职位</option>').appendTo(tmpObjSid);
+                var did = $("#department").val();
+                if (did != 0 && !isNaN(did)) {
+                    $.ajax({
+                            url : "/user/ajax_position",
+                            dataType : "json",
+                            type : "post",
+                            data : {'did' : did}
+                            }).done(function(result) {
+                                    $.each(result, function(k,value) {
+                                        var op = '<option value="' + value.id + '">' + value.name + '</option>';
+                                        $(op).appendTo(tmpObjSid);
+                                    });
+                                });
+                }
+
             });
     });
 </script>
