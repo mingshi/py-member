@@ -11,12 +11,11 @@ mod = Blueprint("login", __name__)
 
 @mod.route('/login')
 def login():
-    username = request.cookies.get('m_username')
-    if not username :
-        return render_template('member/login.html')
-    else :
+    key = app.config['LOGIN_SESSION_NAME']  
+    if "'" + key + "'" in session :
         return redirect(url_for("index.index"))
-
+    else :
+        return render_template('member/login.html')
 
 @mod.route('/do_login', methods=['POST'])
 def do_login():

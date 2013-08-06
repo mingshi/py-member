@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, send_from_directory, render_template
+from flask import Flask, request, redirect, send_from_directory, render_template
 import os
+import re
+
 app = Flask(__name__)
 
 # load config according to enviroment
@@ -13,12 +15,25 @@ app.config.from_object("config.%sConfig" % (app.config['ENV']) )
 
 from member.views import index, login, captcha, position, department
 from member.db.db import db_session
+from member.util.auth import *
 
 app.register_blueprint(index.mod)
 app.register_blueprint(login.mod)
 app.register_blueprint(captcha.mod)
 app.register_blueprint(position.mod)
 app.register_blueprint(department.mod)
+
+@app.before_request
+def before_request() :
+    path = request.path
+    for tmpPath in app.config['NEED_CHECK_ADMIN'] :
+        if re.search(tmpPath, path) :
+            key = app.config['LOGIN_SESSION_NAME']
+            if "'" + key + "'" in session :
+                if not check_admin() :
+                    return redirect('/403')
+            else :
+                return redirect('/login')
 
 @app.errorhandler(404)
 def page_not_found(error):

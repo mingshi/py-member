@@ -7,3 +7,4 @@ def check_admin() :
         return "1"
     else :
         return None
+
