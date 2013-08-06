@@ -8,6 +8,10 @@ SESSION_KEY_CAPTCHA = 'captcha_member'
 SECRET_KEY = "adeaz%MemberSS(*U(*HD&$#"
 LOGIN_SESSION_NAME = "adeazMemberLogin"
 
+LOGIN_KEY = "7d26eda13b33c1257999de31bcd8ebfc"
+REGISTER_KEY = "7a91bbcc7b447bdeb849193c1f805841"
+SIG_KEY = "adeazMemberSigKey@#$%^&"
+
 NEED_CHECK_ADMIN = ['/department','/position','/user']
 
 USER_STATUS_OK = 0
