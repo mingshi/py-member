@@ -12,7 +12,7 @@ setup(name='member',
             'sqlalchemy',
             'Flask-SQLAlchemy',
             'oursql',
-            'wheezy.captcha.image'
+            'wheezy.captcha'
         ]
         
 )
