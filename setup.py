@@ -13,6 +13,7 @@ setup(name='member',
             'Flask-SQLAlchemy',
             'oursql',
             'wheezy.captcha'
+            'PIL'
         ]
         
 )
