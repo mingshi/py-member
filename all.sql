@@ -25,3 +25,7 @@ create table position (
     PRIMARY KEY (`id`),
     KEY `did` (`did`)
 ) engine=innodb default charset utf8;
+
+alter table user add is_admin tinyint(1) NOT NULL DEFAULT '0' COMMENT 'is admin';
+alter table user add position int(10) NOT NULL DEFAULT '0' COMMENT '职位id';
+alter table user add department int(10) NOT NULL DEFAULT '0' COMMENT '部门id';
