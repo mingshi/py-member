@@ -50,6 +50,7 @@ def api_login() :
                     result['info']['realname'] = _user.realname
                     result['info']['mobile'] = _user.mobile
                     result['info']['email'] = _user.email
+                    result['info']['is_admin'] = _user.is_admin
     except Exception, e :
         result['code'] = 155
         result['msg'] = '系统错误'
