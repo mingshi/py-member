@@ -65,6 +65,7 @@ def do_login():
             key = app.config['LOGIN_SESSION_NAME']
             session["'" + key + "'"] = username
             session['adeazmember_realname'] = _user.realname
+            session['adeazmember_uid'] = _user.id
             if _user.is_admin == 1 :
                 session['member_is_admin'] = 1
             result['code'] = 0

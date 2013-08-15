@@ -110,7 +110,7 @@ $(function(){
         } else if ($("#realname").val() == "" || $("#realname").val() == "undefined") {
             $("#realname").animate({ backgroundColor: "#FFB5B5" }, 500)
                     .animate({ backgroundColor: "#FFFFFF" }, 1000);
-        } else if (!$("#password").val() || ($("#password").val().length < 6 || $("#password").val().length >20)) {
+        } else if (!$("#password").val() || ($("#password").val().length < 8 || $("#password").val().length >20)) {
             $("#password").animate({ backgroundColor: "#FFB5B5" }, 500)
                     .animate({ backgroundColor: "#FFFFFF" }, 1000);
         } else if (!$("#mobile").val().match(/^1[3|4|5|8][0-9]\d{8}$/)) {

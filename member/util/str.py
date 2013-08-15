@@ -7,4 +7,4 @@ def check_email(str) :
     return re.match(r"^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$", str)
 
 def check_password(str) :
-    return len(str) >= 6 and len(str) <= 20
+    return len(str) >= 8 and len(str) <= 20

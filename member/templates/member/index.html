@@ -36,6 +36,9 @@
                     {% elif user.status == 1 %}
                     <span class="label label-warning">停用</span>
                     {% endif %}
+                    {% if session.adeazmember_uid == user.id and (not session.member_is_admin or session.member_is_admin != 1) %}
+                    <a class="btn btn-mini btn-info" href="/user/edit-{{ user.id }}"><i class="icon-edit"></i>编辑</a>
+                    {% endif %}
                 </td>
                 {% if session.member_is_admin and session.member_is_admin == 1 %}
                 <td>

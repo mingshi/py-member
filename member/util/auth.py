@@ -3,6 +3,7 @@
 from flask import Flask, session, redirect, request
 from member import app
 import md5
+import re
 
 def check_admin() :
     if ('member_is_admin' in session) and (session['member_is_admin'] == 1) :
@@ -31,3 +32,19 @@ def create_login_sign() :
     sign = md5.new(uri).hexdigest()
 
     return sign
+
+def safe_password(str) :
+    level = 0;
+    if re.search('\d', str) :
+        level += 1
+    if re.search('[a-z]', str) :
+        level += 1
+    if re.search('[A-Z]', str) :
+        level += 1
+    if re.search('[^0-9a-zA-Z]', str) :
+        level += 1
+
+    print(level)
+    if level < 3 :
+        return None
+    return 1

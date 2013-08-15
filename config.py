@@ -12,7 +12,7 @@ LOGIN_KEY = "7d26eda13b33c1257999de31bcd8ebfc"
 REGISTER_KEY = "7a91bbcc7b447bdeb849193c1f805841"
 SIG_KEY = "adeazMemberSigKey@#$%^&"
 
-NEED_CHECK_ADMIN = ['/department','/position','/user']
+NEED_CHECK_ADMIN = ['/department','/position','/user/add','/user/do_add']
 
 USER_STATUS_OK = 0
 USER_STATUS_DELETE = 1
