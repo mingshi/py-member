@@ -46,6 +46,7 @@ def api_login() :
                     result['code'] = 0
                     result['msg'] = '登录成功'
                     result['info'] = {}
+                    result['info']['id'] = _user.id
                     result['info']['username'] = username
                     result['info']['realname'] = _user.realname
                     result['info']['mobile'] = _user.mobile
