@@ -33,6 +33,11 @@ def create_login_sign() :
 
     return sign
 
+def create_user_info_sign() :
+    sign = md5.new("key=" + app.config['USER_INFO_KEY'] + "&uid=" + str(request.form['uid'].strip())).hexdigest()
+    return sign
+
+
 def safe_password(str) :
     level = 0;
     if re.search('\d', str) :
