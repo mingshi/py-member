@@ -30,10 +30,9 @@ def api_userinfo() :
             result['msg'] = '签名错误'
         else :
             uid = int(request.form['uid'])
-            _user = db_session.query(User).join(User.departments, User.positions).filter(User.id == uid).values(User.id, User.realname, User.email, User.mobile, User.login_time, User.login_ip, Position.name, Department.name, User.status, User.is_admin)
+            _user = db_session.query(User).join(User.departments, User.positions).filter(User.id == uid).values(User.id, User.realname, User.email, User.mobile, User.login_time, User.login_ip, Position.name, Department.name, User.status, User.is_admin, User.status)
             user = {}
-            for id, realname, email, mobile, login_time, login_ip,name, dname, status, is_admin in _user :
-                print(id)
+            for id, realname, email, mobile, login_time, login_ip,name, dname, status, is_admin, status in _user :
                 user['id'] = id
                 user['realname'] = realname
                 user['email'] = email
@@ -44,6 +43,7 @@ def api_userinfo() :
                 user['is_admin'] = is_admin
                 user['login_time'] = str(login_time)
                 user['login_ip'] = login_ip
+                user['status'] = status
 
             if not _user :
                 result['code'] = 106
