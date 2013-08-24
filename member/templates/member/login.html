@@ -8,7 +8,7 @@
         <fieldset>
             <legend>Sign In</legend>
             <div id="login_notice" style="display:none;" class="alert">
-                <button data-dismiss="alert" class="close">x</button>
+                <a data-dismiss="alert" class="close">x</a>
                 <span id="login_msg"> </span>
             </div>
             <div class="control-group">
@@ -33,7 +33,7 @@
                 </div>
 
                 <div class="controls">
-                    <button type="submit" id="login" class="btn btn-primary">Sign In</button>
+                    <button type="button" id="login" class="btn btn-primary">Sign In</button>
                 </div>
             </div>
         </fieldset>
@@ -74,6 +74,40 @@
                                     window.location.href='/';
                                 }
                             });
+                }
+            });
+
+            $("#username, #passwd, #verify").bind('keydown', function(e) {
+                var key = e.which;
+                if (key == 13) {
+                    if ($("#username").val() == "") {
+                    $("#username").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor:"#FFFFFF" }, 1000);
+                    } else if ($("#passwd").val() == "") {
+                        $("#passwd").animate({ backgroundColor: "#FFB5B5" }, 500)
+                                .animate({ backgroundColor:"#FFFFFF" }, 1000);
+                    } else if ($("#verify").val() == "") {
+                        $("#verify").animate({ backgroundColor: "#FFB5B5" }, 500)
+                                .animate({ backgroundColor:"#FFFFFF" }, 1000);
+                    } else {
+                        var username = $("#username").val();
+                        var password = $.md5($("#passwd").val());
+                        var verify = $("#verify").val();
+
+                        $.ajax({
+                                url : "/do_login",
+                                dataType : "json",
+                                type : "post",
+                                data : { 'username' : username, 'password' : password, 'verify' : verify }
+                            }).done(function(result){
+                                    if (result.code != 0) {
+                                        $("#login_msg").html(result.msg);
+                                        $("#login_notice").show();
+                                    } else {
+                                        window.location.href='/';
+                                    }
+                                });
+                    } 
                 }
             });
         });
