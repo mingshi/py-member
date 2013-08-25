@@ -188,3 +188,21 @@ def del_user(id) :
         return json.dumps(result)
     else :
         return redirect('/403')
+
+@mod.route('/user/restore-<id>', methods=['POST'])
+def restore_user(id) :
+    if check_admin() :
+        result = {}
+        id = int(id)
+        _user = db_session.query(User).filter_by(id = id).first()
+        if not _user :
+            result['code'] = 103
+            result['msg'] = 'invalid id.'
+        else :
+            _user.status = 0
+            db_session.commit()
+            result['code'] = 0
+            result['msg'] = 'restore success.'
+        return json.dumps(result)
+    else :
+        return redirect('/403')

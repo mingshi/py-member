@@ -44,7 +44,11 @@
                 <td>
                     <a class="btn btn-mini btn-info" href="/user/edit-{{ user.id }}"><i class="icon-edit"></i>编辑</a>
                     {% if not user.is_admin == 1 %}
-                    <a class="btn btn-mini btn-danger del" user_id="{{ user.id }}" title="{{ user.realname }}"><i class="icon-warning-sign"></i>删除</a>
+                        {% if user.status == 1 %}
+                        <a class="btn btn-mini btn-primary restore" user_id="{{ user.id }}" title="{{ user.realname }}"><i class="icon-warning-sign"></i>恢复</a>
+                        {% else %}
+                        <a class="btn btn-mini btn-danger del" user_id="{{ user.id }}" title="{{ user.realname }}"><i class="icon-warning-sign"></i>删除</a>
+                        {% endif %}
                     {% endif %}
                 </td>
                 {% endif %}
@@ -58,7 +62,7 @@
 {% block footer_script %}
 <script type="text/javascript">
     $(".del").click(function(){
-        if (! confirm('Are you sure to delete' + $(this).attr('title') + '?')) {
+        if (! confirm('Are you sure to delete ' + $(this).attr('title') + '?')) {
             return false;
         }
 
@@ -74,6 +78,24 @@
                     }
                 });
 
+    });
+
+    $(".restore").click(function() {
+        if (! confirm('Are you sure to restore ' + $(this).attr('title') + '?')) {
+            return fasle;
+        }
+
+        var id = $(this).attr('user_id');
+
+        $.ajax({
+            url : "/user/restore-" + id,
+            dataType : "json",
+            type : "post"
+            }).done(function(result) {
+                if (result.code == 0) {
+                    window.location.reload();
+                }
+            });
     });
 </script>
 {% endblock %}
