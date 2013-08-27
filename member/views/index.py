@@ -163,7 +163,7 @@ def do_add_user() :
          user = User(username = username, realname = realname, mobile =
                  mobile, email = email, department = department, position =
                  position,status = 0, password =
-                 md5.new(password).hexdigest(), is_admin = 0)
+                 md5.new(password).hexdigest(), is_admin = 0, is_default_pass = 1)
          db_session.add(user)
          db_session.commit()
          result['code'] = 0
