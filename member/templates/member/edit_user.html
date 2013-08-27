@@ -6,7 +6,7 @@
 <div class="well">
     <form class="form-horizontal">
         <fieldset>
-            <legend>Edit User</legend>
+            <legend>Edit User {% if user.is_default_pass == 1 %} <span style="color:#C09853;">请修改初始密码！</span> {% endif %}</legend>
             <div id="user_edit_notice" style="display:none;" class="alert">
                 <button data-dismiss="alert" class="close">x</button>
                 <span id="user_edit_msg"> </span>

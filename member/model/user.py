@@ -16,6 +16,7 @@ class User(Model):
     is_admin = Column(Integer)
     position = Column(Integer, ForeignKey('position.id'), nullable=False)
     department = Column(Integer, ForeignKey('department.id'), nullable=False)
+    is_default_pass = Column(Integer)
 
     def __init__(self, username, realname, password, mobile, email, status, department, position, is_admin):
         self.username = username

@@ -38,6 +38,8 @@ def before_request() :
                     return redirect('/403')
             else :
                 return redirect('/login')
+    if "is_default_pass" in session and path == "/" :
+        return redirect('/user/edit-' + str(session['adeazmember_uid']))
 
 @app.errorhandler(404)
 def page_not_found(error):
