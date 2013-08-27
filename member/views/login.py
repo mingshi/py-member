@@ -77,6 +77,7 @@ def logout() :
     key = app.config['LOGIN_SESSION_NAME']
     session.pop("'" + key + "'", None)
     session.pop('adeazmember_realname', None)
+    session.pop('adeazmember_uid', None)
     if 'member_is_admin' in session :
         session.pop('member_is_admin', None)
     
