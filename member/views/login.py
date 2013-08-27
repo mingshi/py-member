@@ -66,7 +66,6 @@ def do_login():
             session["'" + key + "'"] = username
             session['adeazmember_realname'] = _user.realname
             session['adeazmember_uid'] = _user.id
-            session['is_default_pass'] = _user.is_default_pass
             if _user.is_admin == 1 :
                 session['member_is_admin'] = 1
             result['code'] = 0

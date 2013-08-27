@@ -18,6 +18,7 @@ from member.views.api import apilogin
 from member.views.api import apiuserinfo
 from member.db.db import db_session
 from member.util.auth import *
+from member.model.user import User
 
 app.register_blueprint(index.mod)
 app.register_blueprint(login.mod)
@@ -38,8 +39,10 @@ def before_request() :
                     return redirect('/403')
             else :
                 return redirect('/login')
-    if "is_default_pass" in session and path == "/" :
-        return redirect('/user/edit-' + str(session['adeazmember_uid']))
+    if "adeazmember_uid" in session and path == "/" :
+        _user = db_session.query(User).filter_by(id = session['adeazmember_uid']).first()
+        if _user.is_default_pass == 1 :
+            return redirect('/user/edit-' + str(session['adeazmember_uid']))
 
 @app.errorhandler(404)
 def page_not_found(error):

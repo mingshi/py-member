@@ -18,7 +18,7 @@ class User(Model):
     department = Column(Integer, ForeignKey('department.id'), nullable=False)
     is_default_pass = Column(Integer)
 
-    def __init__(self, username, realname, password, mobile, email, status, department, position, is_admin):
+    def __init__(self, username, realname, password, mobile, email, status, department, position, is_admin, is_default_pass):
         self.username = username
         self.realname = realname
         self.password = password
@@ -28,6 +28,7 @@ class User(Model):
         self.department = department
         self.position = position
         self.is_admin = is_admin
+        self.is_default_pass = is_default_pass
 
     def __repr__(self):
         return '<User %r' % (self.username + ":" + self.realname)

@@ -107,6 +107,8 @@ def do_edit_user() :
             _user.email = email
             _user.department = department
             _user.position = position
+            if _user.is_default_pass == 1 :
+                _user.is_default_pass = 0
             db_session.commit()
             result['code'] = 0
             result['msg'] = 'edit success.'

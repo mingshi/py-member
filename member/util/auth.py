@@ -49,7 +49,6 @@ def safe_password(str) :
     if re.search('[^0-9a-zA-Z]', str) :
         level += 1
 
-    print(level)
     if level < 3 :
         return None
     return 1
