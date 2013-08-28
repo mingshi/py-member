@@ -28,7 +28,7 @@ def index():
         kw = request.args.get('kw')
         query_string = ""
         if kw and kw.strip():
-            query_string = "kw=" + str(kw)
+            query_string = "kw=" + kw
             _users = db_session.query(User).join(User.departments, User.positions).filter(or_(User.mobile.like('%' + kw + '%'), User.realname.like('%' + kw + '%'), User.email.like('%' + kw + '%'))).values(User.id, User.realname, User.email, User.mobile, Position.name, Department.name, User.status, User.is_admin) 
         else :
             _users = db_session.query(User).join(User.departments,
