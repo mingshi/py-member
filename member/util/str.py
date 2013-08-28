@@ -8,3 +8,6 @@ def check_email(str) :
 
 def check_password(str) :
     return len(str) >= 8 and len(str) <= 20
+
+def check_qq(str) :
+    return re.match(r"^\d{5,10}$", str)

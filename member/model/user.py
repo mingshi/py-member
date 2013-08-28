@@ -17,8 +17,9 @@ class User(Model):
     position = Column(Integer, ForeignKey('position.id'), nullable=False)
     department = Column(Integer, ForeignKey('department.id'), nullable=False)
     is_default_pass = Column(Integer)
+    qq = Column(String(20))
 
-    def __init__(self, username, realname, password, mobile, email, status, department, position, is_admin, is_default_pass):
+    def __init__(self, username, realname, password, mobile, email, status, department, position, is_admin, is_default_pass, qq):
         self.username = username
         self.realname = realname
         self.password = password
@@ -29,6 +30,7 @@ class User(Model):
         self.position = position
         self.is_admin = is_admin
         self.is_default_pass = is_default_pass
+        self.qq = qq
 
     def __repr__(self):
         return '<User %r' % (self.username + ":" + self.realname)

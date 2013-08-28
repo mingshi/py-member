@@ -49,6 +49,13 @@
         </div>
         
         <div class="control-group">
+            <label class="control-label" for="qq">QQ:</label>
+            <div class="controls">
+                <input type="text" id="qq" name="qq" />
+            </div>
+        </div>
+
+        <div class="control-group">
             <label class="control-label" for="department">Department:</label>
             <div class="controls">
                 <select id="department" name="department">
@@ -116,6 +123,9 @@ $(function(){
         } else if (!$("#email").val().match(/^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$/)) {
             $("#email").animate({ backgroundColor: "#FFB5B5" }, 500)
                     .animate({ backgroundColor: "#FFFFFF" }, 1000);
+        }else if ($("#qq").val() && !$("#qq").val().match(/^\d{5,10}$/)) {
+            $("#qq").animate({ backgroundColor: "#FFB5B5" }, 500)
+                    .animate({ backgroundColor: "#FFFFFF" }, 1000);
         } else if (!$("#department").val() || $("#department").val() == 0) {
             $("#department").animate({ backgroundColor: "#FFB5B5" }, 500)
                     .animate({ backgroundColor: "#FFFFFF" }, 1000);
@@ -130,12 +140,13 @@ $(function(){
             var department = $("#department").val();
             var position = $("#position").val();
             var password = $("#password").val();
+            var qq = $("#qq").val();
             
             $.ajax({
                     url : "/user/do_add",
                     dataType : "json",
                     type : "post",
-                    data : {'realname' : realname, 'username' : username, 'mobile' : mobile, 'email' : email, 'department' : department, 'position' : position,           'password' : password}
+                    data : {'realname' : realname, 'username' : username, 'mobile' : mobile, 'email' : email, 'qq' : qq, 'department' : department, 'position' : position, 'password' : password}
                 }).done(function(result){
                         $("#user_add_msg").html(result.msg);
                         $("#user_add_notice").show();

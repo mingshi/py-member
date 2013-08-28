@@ -49,6 +49,13 @@
         </div>
 
         <div class="control-group">
+            <label class="control-label" for="qq">QQ:</label>
+            <div class="controls">
+                <input type="text" name="qq" id="qq" value="{{ user.qq }}" />
+            </div>
+        </div>
+
+        <div class="control-group">
             <label class="control-label" for="department">Department:</label>
             <div class="controls">
                 <select id="department" name="department">
@@ -99,6 +106,9 @@
                 } else if (!$("#email").val().match(/^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$/)) {
                     $("#email").animate({ backgroundColor: "#FFB5B5" }, 500)
                             .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                }else if ($("#qq").val() && !$("#qq").val().match(/^\d{5,10}$/)) {
+                    $("#qq").animate({ backgroundColor: "#FFB5B5" }, 500)
+                            .animate({ backgroundColor: "#FFFFFF" }, 1000);
                 } else if (!$("#department").val() || $("#department").val() == 0) {
                     $("#department").animate({ backgroundColor: "#FFB5B5" }, 500)
                             .animate({ backgroundColor: "#FFFFFF" }, 1000);
@@ -116,12 +126,13 @@
                     var position = $("#position").val();
                     var password = $("#password").val();
                     var id = $("#id").val();
+                    var qq = $("#qq").val();
 
                     $.ajax({
                         url : "/user/do_edit",
                         dataType : "json",
                         type : "post",
-                        data : {'id' : id, 'realname' : realname, 'mobile' : mobile, 'email' : email, 'department' : department, 'position' : position, 'password' : password}
+                        data : {'id' : id, 'realname' : realname, 'mobile' : mobile, 'email' : email, 'qq' : qq, 'department' : department, 'position' : position, 'password' : password}
                     }).done(function(result){
                             $("#user_edit_msg").html(result.msg); 
                             $("#user_edit_notice").show();
@@ -164,6 +175,9 @@
                     } else if (!$("#email").val().match(/^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$/)) {
                         $("#email").animate({ backgroundColor: "#FFB5B5" }, 500)
                                 .animate({ backgroundColor: "#FFFFFF" }, 1000);
+                    }else if ($("#qq").val() && !$("#qq").val().match(/^\d{5,10}$/)) {
+                        $("#qq").animate({ backgroundColor: "#FFB5B5" }, 500)
+                                .animate({ backgroundColor: "#FFFFFF" }, 1000);
                     } else if (!$("#department").val() || $("#department").val() == 0) {
                         $("#department").animate({ backgroundColor: "#FFB5B5" }, 500)
                                 .animate({ backgroundColor: "#FFFFFF" }, 1000);
@@ -181,12 +195,13 @@
                         var position = $("#position").val();
                         var password = $("#password").val();
                         var id = $("#id").val();
+                        var qq = $("#qq").val();
 
                         $.ajax({
                             url : "/user/do_edit",
                             dataType : "json",
                             type : "post",
-                            data : {'id' : id, 'realname' : realname, 'mobile' : mobile, 'email' : email, 'department' : department, 'position' : position, 'password' : password}
+                            data : {'id' : id, 'realname' : realname, 'mobile' : mobile, 'email' : email, 'qq' : qq, 'department' : department, 'position' : position, 'password' : password}
                         }).done(function(result){
                                 $("#user_edit_msg").html(result.msg);
                                 $("#user_edit_notice").show();

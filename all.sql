@@ -31,3 +31,5 @@ alter table user add position int(10) NOT NULL DEFAULT '0' COMMENT '职位id';
 alter table user add department int(10) NOT NULL DEFAULT '0' COMMENT '部门id';
 
 alter table user add is_default_pass tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否初始密码1:是,0:否';
+
+alter table user add qq varchar(20) NOT null DEFAULT '' comment '用户qq';

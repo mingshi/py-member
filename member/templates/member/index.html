@@ -6,12 +6,53 @@
         <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/user/add">添加名人</a>
     {% endif %}
 </div>
+
+<div class="well">
+    <table class="table table-bordered table-striped">
+        <thead>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>邮箱</th>
+            <th>QQ</th>
+            <th>职务</th>
+            <th>部门</th>
+            <th>状态</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+            {% if myInfo.id == session.adeazmember_uid %}
+                <tr>
+                    <td>{{ myInfo.realname }}</td>
+                    <td>{{ myInfo.mobile }}</td>
+                    <td>{{ myInfo.email }}</td>
+                    <td>{{ myInfo.qq }}</td>
+                    <td>{{ myInfo.position }}</td>
+                    <td>{{ myInfo.department }}</td>
+                    <td>
+                    {% if myInfo.status == 0 %}
+                    <span class="label label-success">正常</span>
+                    {% elif myInfo.status == 1 %}
+                    <span class="label label-warning">停用</span>
+                    {% endif %}
+                    </td>
+                    <td>
+                    {% if session.adeazmember_uid == myInfo.id %}
+                    <a class="btn btn-mini btn-info" href="/user/edit-{{ myInfo.id }}"><i class="icon-edit"></i>编辑</a>
+                    {% endif %}
+                    </td> 
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+</div>
+
 <div class="well">
     <form class="navbar-form pull-left" action="" method="get">
         <input type="text" name="kw" id="kw" class="span2 large" placeholder="姓名/电话/邮箱 模糊搜索" style="width:200px" />
         <button type="submit" class="btn btn-primary">搜索</button>
     </form>
 </div>
+
 <div class="well">
     <table class="table table-bordered table-striped">
         <thead>
@@ -19,6 +60,7 @@
                 <th>姓名</th>
                 <th>电话</th>
                 <th>邮箱</th>
+                <th>QQ</th>
                 <th>职务</th>
                 <th>部门</th>
                 <th>状态</th>
@@ -33,6 +75,7 @@
                 <td>{{ user.realname }}</td>
                 <td>{{ user.mobile }}</td>
                 <td>{{ user.email }}</td>
+                <td>{{ user.qq }}</td>
                 <td>{{ user.pname }}</td>
                 <td>{{ user.dname }}</td>
                 <td>

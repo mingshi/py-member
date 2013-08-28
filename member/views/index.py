@@ -29,22 +29,22 @@ def index():
         query_string = ""
         if kw and kw.strip():
             query_string = "kw=" + kw
-            _users = db_session.query(User).join(User.departments, User.positions).filter(or_(User.mobile.like('%' + kw + '%'), User.realname.like('%' + kw + '%'), User.email.like('%' + kw + '%'))).values(User.id, User.realname, User.email, User.mobile, Position.name, Department.name, User.status, User.is_admin) 
+            _users = db_session.query(User).join(User.departments, User.positions).filter(or_(User.mobile.like('%' + kw + '%'), User.realname.like('%' + kw + '%'), User.email.like('%' + kw + '%'))).values(User.id, User.realname, User.email, User.qq, User.mobile, Position.name, Department.name, User.status, User.is_admin) 
         else :
             _users = db_session.query(User).join(User.departments,
-                    User.positions).values(User.id, User.realname, User.email,
+                    User.positions).values(User.id, User.realname, User.email, User.qq,
                             User.mobile, Position.name, Department.name, User.status,
                             User.is_admin)
         users = []
-        for id, realname, email, mobile, name, dname, status, is_admin in _users :
-            users.append({'id' : id, 'realname' : realname, 'email' : email,
+        for id, realname, email, qq, mobile, name, dname, status, is_admin in _users :
+            users.append({'id' : id, 'realname' : realname, 'email' : email, 'qq' : qq,
                 'mobile' : mobile, 'pname' : name, 'dname' : dname, 'status' :
                 status, 'is_admin' : is_admin})
         #users = db_session.query(User).filter_by(status = 0).all()
      
         currentUrl = request.url
         allNum = len(users)
-        per_page = 2
+        per_page = 10
         pages = int(math.ceil(float(allNum) / per_page))
 
         if not request.args.get('page') :
@@ -58,10 +58,29 @@ def index():
         start = (page - 1) * per_page
         end = page * per_page
         users = users[start : end]
-        print(users)
         pagination = Pagination(None, page, per_page, int(allNum), None)
 
-        return render_template("member/index.html", users = users, pagination = pagination, query_string = query_string) 
+        #get my info
+        myId = session['adeazmember_uid']
+        _myInfo = db_session.query(User).join(User.departments, User.positions).filter(User.id == myId).values(User.id, User.realname, User.email, User.qq, User.mobile, User.login_time, User.login_ip, Position.name, Department.name, User.status, User.is_admin, User.status)
+        myInfo = {}
+        for id, realname, email,qq, mobile, login_time, login_ip,name, dname, status, is_admin, status in _myInfo :
+            myInfo['id'] = id
+            myInfo['realname'] = realname
+            myInfo['email'] = email
+            myInfo['mobile'] = mobile
+            myInfo['position'] = name
+            myInfo['department'] = dname
+            myInfo['status'] = status
+            myInfo['is_admin'] = is_admin
+            myInfo['login_time'] = str(login_time)
+            myInfo['login_ip'] = login_ip
+            myInfo['status'] = status
+            myInfo['qq'] = qq
+        
+
+
+        return render_template("member/index.html", users = users, myInfo = myInfo, pagination = pagination, query_string = query_string) 
     else :
         return redirect("/login")
 
@@ -101,6 +120,7 @@ def do_edit_user() :
         password = request.form['password'].strip()
         mobile = request.form['mobile'].strip()
         email = request.form['email'].strip()
+        qq = request.form['qq'].strip()
         department = int(request.form['department'].strip())
         position = int(request.form['position'].strip())
 
@@ -128,6 +148,9 @@ def do_edit_user() :
         elif not id :
             result['code'] = 107
             result['msg'] = 'invalid id.'
+        elif not check_qq(qq) :
+            result['code'] = 111
+            result['msg'] = 'qq number error'
         else :
             _user = db_session.query(User).filter_by(id = id).first()
             if password :
@@ -137,8 +160,10 @@ def do_edit_user() :
             _user.email = email
             _user.department = department
             _user.position = position
+            _user.qq = qq
             if _user.is_default_pass == 1 :
                 _user.is_default_pass = 0
+            session['adeazmember_realname'] = realname
             db_session.commit()
             result['code'] = 0
             result['msg'] = 'edit success.'
@@ -160,6 +185,7 @@ def do_add_user() :
     password = request.form['password'].strip()
     mobile = request.form['mobile'].strip()
     email = request.form['email'].strip()
+    qq = request.form['qq'].strip()
     department = int(request.form['department'].strip())
     position = int(request.form['position'].strip())
         
@@ -189,9 +215,12 @@ def do_add_user() :
     elif _user :
         result['code'] = 109
         result['msg'] = 'the username has been exist.'
+    elif not check_qq(qq) :
+        result['code'] = 111
+        result['msg'] = 'qq number error'
     else :
          user = User(username = username, realname = realname, mobile =
-                 mobile, email = email, department = department, position =
+                 mobile, email = email, qq = qq, department = department, position =
                  position,status = 0, password =
                  md5.new(password).hexdigest(), is_admin = 0, is_default_pass = 1)
          db_session.add(user)
