@@ -46,7 +46,7 @@ def do_login():
         if not session["'" + SESSION_KEY_CAPTCHA + "'"] :
             result['code'] = 105
             result['msg'] = 'session error for captcha!'
-        elif not verify == code :
+        elif not verify.lower() == code :
             result['code'] = 106
             result['msg'] = 'verify error!'
         elif not _user :
