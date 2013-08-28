@@ -6,7 +6,12 @@
         <a class="btn btn-primary" style="float:right;margin-top:-5px;" href="/user/add">添加名人</a>
     {% endif %}
 </div>
-
+<div class="well">
+    <form class="navbar-form pull-left" action="" method="get">
+        <input type="text" name="kw" id="kw" class="span2 large" placeholder="姓名/电话/邮箱 模糊搜索" style="width:200px" />
+        <button type="submit" class="btn btn-primary">搜索</button>
+    </form>
+</div>
 <div class="well">
     <table class="table table-bordered table-striped">
         <thead>
@@ -56,6 +61,7 @@
             {% endfor %}
         </tbody>
     </table>
+    {{ pagination_html(pagination, request.endpoint, query_string) }}
 </div>
 {% endblock %}
 

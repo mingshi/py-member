@@ -6,12 +6,15 @@ from member.db.db import db_session
 from member.model import *
 from member.util.auth import *
 from member.util.str import *
+from sqlalchemy import or_
 import md5
 import json
+from flask.ext.sqlalchemy import Pagination
+import math
 
 mod = Blueprint("index", __name__)
 
-@mod.route('/')
+@mod.route('/', methods=['GET','POST'])
 def index():
     key = app.config['LOGIN_SESSION_NAME']
     if "'" + key + "'" in session :
@@ -21,17 +24,44 @@ def index():
         for status in db_session.query(User.status).filter_by(username = session["'" + key + "'"]).first():
             if status == 1 :
                 return redirect('/logout')
-        _users = db_session.query(User).join(User.departments,
-                User.positions).values(User.id, User.realname, User.email,
-                        User.mobile, Position.name, Department.name, User.status,
-                        User.is_admin)
+
+        kw = request.args.get('kw')
+        query_string = ""
+        if kw and kw.strip():
+            query_string = "kw=" + str(kw)
+            _users = db_session.query(User).join(User.departments, User.positions).filter(or_(User.mobile.like('%' + kw + '%'), User.realname.like('%' + kw + '%'), User.email.like('%' + kw + '%'))).values(User.id, User.realname, User.email, User.mobile, Position.name, Department.name, User.status, User.is_admin) 
+        else :
+            _users = db_session.query(User).join(User.departments,
+                    User.positions).values(User.id, User.realname, User.email,
+                            User.mobile, Position.name, Department.name, User.status,
+                            User.is_admin)
         users = []
         for id, realname, email, mobile, name, dname, status, is_admin in _users :
             users.append({'id' : id, 'realname' : realname, 'email' : email,
                 'mobile' : mobile, 'pname' : name, 'dname' : dname, 'status' :
                 status, 'is_admin' : is_admin})
         #users = db_session.query(User).filter_by(status = 0).all()
-        return render_template("member/index.html", users = users) 
+     
+        currentUrl = request.url
+        allNum = len(users)
+        per_page = 2
+        pages = int(math.ceil(float(allNum) / per_page))
+
+        if not request.args.get('page') :
+            page = 1
+        else :
+            page = int(request.args.get('page'))
+
+        if page < 0 or (len(users) > 0 and page > pages) :
+            return redirect('/404')
+       
+        start = (page - 1) * per_page
+        end = page * per_page
+        users = users[start : end]
+        print(users)
+        pagination = Pagination(None, page, per_page, int(allNum), None)
+
+        return render_template("member/index.html", users = users, pagination = pagination, query_string = query_string) 
     else :
         return redirect("/login")
 
