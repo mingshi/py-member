@@ -16,6 +16,7 @@ app.config.from_object("config.%sConfig" % (app.config['ENV']) )
 from member.views import index, login, captcha, position, department
 from member.views.api import apilogin
 from member.views.api import apiuserinfo
+from member.views.api import apimultiuserinfo
 from member.db.db import db_session
 from member.util.auth import *
 from member.model.user import User
@@ -27,6 +28,7 @@ app.register_blueprint(position.mod)
 app.register_blueprint(department.mod)
 app.register_blueprint(apilogin.mod)
 app.register_blueprint(apiuserinfo.mod)
+app.register_blueprint(apimultiuserinfo.mod)
 
 @app.before_request
 def before_request() :
