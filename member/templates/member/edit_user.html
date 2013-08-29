@@ -4,7 +4,7 @@
 
 {% block main %}
 <div class="well">
-    <form class="form-horizontal">
+    <form class="form-horizontal" autocomplete="off">
         <fieldset>
             <legend>Edit User {% if user.is_default_pass == 1 %} <span style="color:#C09853;">请修改初始密码！</span> {% endif %}</legend>
             <div id="user_edit_notice" style="display:none;" class="alert">
