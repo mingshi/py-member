@@ -29,9 +29,8 @@ def api_multiuserinfo() :
             result['code'] = 105
             result['msg'] = '签名错误'
         else :
-            uid = request.form['uid'].strip()
+            uid = request.form['uid'].strip().split(',')
             _users = db_session.query(User).join(User.departments, User.positions).filter(User.id.in_(uid)).values(User.id, User.realname, User.email, User.qq, User.mobile, User.login_time, User.login_ip, Position.name, Department.name, User.status, User.is_admin, User.status)
-            print(_users)
             users = []
             for id, realname, email,qq, mobile, login_time, login_ip,name, dname, status, is_admin, status in _users :
                 users.append({
