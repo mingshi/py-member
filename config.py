@@ -1,8 +1,30 @@
 # -*- coding: utf-8 -*-
 import os
-ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
+def hostname():  
+    sys = os.name  
+    if sys == 'nt':  
+            hostname = os.getenv('computername')  
+            return hostname  
+    elif sys == 'posix':  
+            host = os.popen('echo $HOSTNAME')  
+            try:  
+                    hostname = host.read()  
+                    return hostname  
+            finally:  
+                    host.close()  
+    else:  
+            return 'Unkwon hostname' 
 
-ENV="Development"
+
+DEV_HOST = ['mingshi-hacking.local']
+
+if hostname().strip('\n') in DEV_HOST :
+    ENV = "Development"
+else :
+    ENV = "Production"
+
+
+ROOT_PATH = os.path.abspath(os.path.dirname(__file__))
 
 SESSION_KEY_CAPTCHA = 'captcha_member'
 SECRET_KEY = "adeaz%MemberSS(*U(*HD&$#"
@@ -28,6 +50,7 @@ class Config(object):
 
 class ProductionConfig(Config):
     DEBUG=False
+    DB_URI="mysql+oursql://root:pwd4root#@!@192.168.0.203:3307/member?charset=utf8"
 
 class DevelopmentConfig(Config):
     PORT=3888
