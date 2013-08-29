@@ -4,7 +4,7 @@
      <callable>app</callable>
      <socket>/tmp/uwsgi.sock</socket>
      <master/>
-     <processes>4</processes>
+     <processes>8</processes>
      <daemonize>/var/log/uwsgi.log</daemonize>
      <memory-report />
      <no-orphans />
