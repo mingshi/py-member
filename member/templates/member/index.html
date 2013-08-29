@@ -74,7 +74,7 @@
             <tr>
                 <td>{{ user.realname }}</td>
                 <td>{{ user.mobile }}</td>
-                <td>{{ user.email }}</td>
+                <td>{{ user.email }} {% if user.id != myInfo.id %} <a href="mailto:{{ user.email }}" style="float:right;"><i class="icon-envelope"></i></a> {% endif %}</td>
                 <td>{{ user.qq }}</td>
                 <td>{{ user.pname }}</td>
                 <td>{{ user.dname }}</td>
