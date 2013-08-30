@@ -37,6 +37,9 @@ def create_user_info_sign() :
     sign = md5.new("key=" + app.config['USER_INFO_KEY'] + "&uid=" + str(request.form['uid'].strip())).hexdigest()
     return sign
 
+def create_user_info_sign_by_username() :
+    sign = md5.new("key=" + app.config['USER_INFO_KEY'] + "&username=" + str(request.form['username'].strip())).hexdigest()
+    return sign
 
 def safe_password(str) :
     level = 0;
