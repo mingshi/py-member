@@ -37,6 +37,8 @@ SIG_KEY = "adeazMemberSigKey@#$%^&"
 USER_INFO_KEY = "!adeazMemberUiFO7&^%"
 USER_INFO_SIGN = "3ec8e544422a626075d904d0a9be0dcb"
 
+SEARCH_USER_SIGN = "7f54de2f8ef0ae3c885431acf30f2839"
+SEARCH_USER_KEY = "8cc59b4056aae8d50091ec8647127105"
 
 NEED_CHECK_ADMIN = ['/department','/position','/user/add','/user/do_add']
 

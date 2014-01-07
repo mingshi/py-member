@@ -18,6 +18,7 @@ from member.views.api import apilogin
 from member.views.api import apiuserinfo
 from member.views.api import apimultiuserinfo
 from member.views.api import userinfo_by_username
+from member.views.api import apisearchuser
 from member.db.db import db_session
 from member.util.auth import *
 from member.model.user import User
@@ -31,6 +32,7 @@ app.register_blueprint(apilogin.mod)
 app.register_blueprint(apiuserinfo.mod)
 app.register_blueprint(apimultiuserinfo.mod)
 app.register_blueprint(userinfo_by_username.mod)
+app.register_blueprint(apisearchuser.mod)
 
 @app.before_request
 def before_request() :
