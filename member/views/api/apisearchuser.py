@@ -43,8 +43,8 @@ def apisearchuser() :
                 user['realname'] = realname
                 user['position'] = name
                 user['department'] = dname
-                user['label'] = "\""+ str(id) + " " + realname + " " + dname + "\""
-                user['value'] = "\""+ str(id) + " " + realname + " " + dname + "\""
+                user['label'] = str(id) + " " + realname + " " + dname
+                user['value'] = str(id) + " " + realname + " " + dname
                 users.append(user)
 
             result['code'] = 0
