@@ -33,6 +33,11 @@ def create_login_sign() :
 
     return sign
 
+
+def create_search_user_sign() :
+    sign = md5.new("key=" + app.config['SEARCH_USER_KEY'] + "&kwd=" + str(request.form['kwd'].strip())).hexdigest()
+    return sign
+
 def create_user_info_sign() :
     sign = md5.new("key=" + app.config['USER_INFO_KEY'] + "&uid=" + str(request.form['uid'].strip())).hexdigest()
     return sign
