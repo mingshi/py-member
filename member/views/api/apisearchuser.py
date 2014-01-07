@@ -35,20 +35,21 @@ def apisearchuser() :
             result['msg'] = '签名错误'
         else :
             kwd = str(request.form['kwd']).strip()
-            _user = db_session.query(User).join(User.departments, User.positions).filter(User.email.like('%' + kw + '%')).values(User.id, User.realname, Position.name, Department.name)
-            user = {}
+            _user = db_session.query(User).join(User.departments, User.positions).filter(User.email.like('%' + kwd + '%')).values(User.id, User.realname, Position.name, Department.name)
+            users = []
             for id, realname, name, dname in _user :
+                user = {}
                 user['id'] = id
                 user['realname'] = realname
                 user['position'] = name
                 user['department'] = dname
                 user['label'] = "\""+ str(id) + " " + realname + " " + dname + "\""
                 user['value'] = "\""+ str(id) + " " + realname + " " + dname + "\""
-            
+                users.append(user)
 
             result['code'] = 0
             result['msg'] = 'success'
-            result['info'] = user
+            result['info'] = users
     except Exception, e :
         result['code'] = 155
         result['msg'] = '系统错误'
