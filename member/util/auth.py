@@ -35,7 +35,7 @@ def create_login_sign() :
 
 
 def create_search_user_sign() :
-    sign = md5.new("key=" + app.config['SEARCH_USER_KEY'] + "&kwd=" + str(request.form['kwd'].strip())).hexdigest()
+    sign = md5.new("key=" + app.config['SEARCH_USER_SIGN'] + "&kwd=" + str(request.form['kwd'].strip())).hexdigest()
     return sign
 
 def create_user_info_sign() :
