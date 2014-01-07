@@ -1,0 +1,6 @@
+python-memcached
+Flask
+sqlalchemy
+Flask-SQLAlchemy
+oursql
+wheezy.captchaPIL
