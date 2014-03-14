@@ -148,9 +148,6 @@ def do_edit_user() :
         elif password and not safe_password(password) :
             result['code'] = 108
             result['msg'] = 'password error,must require alphabet & number & special symbols'
-        elif not check_mobile(mobile) :
-            result['code'] = 103
-            result['msg'] = 'mobile must be in 11 length.'
         elif not check_email(email) :
             result['code'] = 104
             result['msg'] = 'email error.'
