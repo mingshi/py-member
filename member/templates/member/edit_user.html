@@ -139,9 +139,6 @@
                 } else if (!$("#email").val().match(/^(\w+([-+.]\w+)*)+@(\w)+((\.\w{2,3}){1,2})$/)) {
                     $("#email").animate({ backgroundColor: "#FFB5B5" }, 500)
                             .animate({ backgroundColor: "#FFFFFF" }, 1000);
-                }else if ($("#qq").val() && !$("#qq").val().match(/^\d{5,10}$/)) {
-                    $("#qq").animate({ backgroundColor: "#FFB5B5" }, 500)
-                            .animate({ backgroundColor: "#FFFFFF" }, 1000);
                 } else if (!$("#department").val() || $("#department").val() == 0) {
                     $("#department").animate({ backgroundColor: "#FFB5B5" }, 500)
                             .animate({ backgroundColor: "#FFFFFF" }, 1000);

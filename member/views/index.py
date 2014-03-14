@@ -163,9 +163,6 @@ def do_edit_user() :
         elif not id :
             result['code'] = 107
             result['msg'] = 'invalid id.'
-        elif not check_qq(qq) :
-            result['code'] = 111
-            result['msg'] = 'qq number error'
         else :
             _user = db_session.query(User).filter_by(id = id).first()
             if password :
@@ -236,9 +233,6 @@ def do_add_user() :
     elif _user :
         result['code'] = 109
         result['msg'] = 'the username has been exist.'
-    elif not check_qq(qq) :
-        result['code'] = 111
-        result['msg'] = 'qq number error'
     else :
          user = User(username = username, realname = realname, mobile =
                  mobile, email = email, qq = qq, department = department, position =
