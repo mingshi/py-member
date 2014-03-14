@@ -105,8 +105,18 @@ def edit_user(id) :
         if not _user :
             return redirect('/403')
         else :
+            higherUserStr = ""
+            higher = int(_user.higher)
+            higherUser = db_session.query(User).filter_by(id = higher).first()
+            if higherUser :
+                higherUserPosition = db_session.query(Position).filter_by(id = higherUser.higher).first()
+                if higherUserPosition :
+                    higherUserStr = str(higherUser.id) + " " + higherUser.realname + " " + higherUserPosition.name
+                else :
+                    higherUserStr = str(higherUser.id) + " " + higherUser.realname
+
             return render_template('member/edit_user.html', user = _user,
-                    departments = _departments, positions = _positions, position = _position)
+                    departments = _departments, positions = _positions, position = _position, higherUserStr = higherUserStr)
     else :
         return redirect('/403')
 
@@ -123,6 +133,11 @@ def do_edit_user() :
         qq = request.form['qq'].strip()
         department = int(request.form['department'].strip())
         position = int(request.form['position'].strip())
+        higher = request.form['higher'].strip()
+        hArr = higher.split(' ')
+        higherUid = hArr[0]
+        if not higherUid :
+            higherUid = 0
 
         if not realname :
             result['code'] = 101
@@ -161,6 +176,7 @@ def do_edit_user() :
             _user.department = department
             _user.position = position
             _user.qq = qq
+            _user.higher = higherUid
             if _user.is_default_pass == 1 :
                 _user.is_default_pass = 0
             session['adeazmember_realname'] = realname
@@ -188,7 +204,12 @@ def do_add_user() :
     qq = request.form['qq'].strip()
     department = int(request.form['department'].strip())
     position = int(request.form['position'].strip())
-        
+    higher = request.form['higher'].strip()
+    hArr = higher.split(' ')
+    higherUid = hArr[0]
+    if not higherUid :
+        higherUid = 0
+
     _user = db_session.query(User).filter_by(username = username).first()
         
     if not realname :
@@ -222,7 +243,7 @@ def do_add_user() :
          user = User(username = username, realname = realname, mobile =
                  mobile, email = email, qq = qq, department = department, position =
                  position,status = 0, password =
-                 md5.new(password).hexdigest(), is_admin = 0, is_default_pass = 1)
+                 md5.new(password).hexdigest(), is_admin = 0, is_default_pass = 1, higher = higherUid)
          db_session.add(user)
          db_session.commit()
          result['code'] = 0
@@ -264,3 +285,21 @@ def restore_user(id) :
         return json.dumps(result)
     else :
         return redirect('/403')
+
+@mod.route('/getJsonUser', methods=['GET'])
+def get_json_user() :
+    kwd = request.args.get('term').strip()
+    _user = db_session.query(User).join(User.departments, User.positions).filter(User.email.like('%' + kwd + '%')).values(User.id, User.realname, User.higher, Position.name, Department.name)
+    users = []
+    for id, realname, name, dname, higher in _user :
+        user = {}
+        user['id'] = id
+        user['realname'] = realname
+        user['position'] = name
+        user['department'] = dname
+        user['label'] = str(id) + " " + realname + " " + dname
+        user['value'] = str(id) + " " + realname + " " + dname
+        user['higher'] = higher
+        users.append(user)
+
+    return json.dumps(users)

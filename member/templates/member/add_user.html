@@ -3,6 +3,14 @@
 {% block title %}Add User{% endblock %}
 
 {% block main %}
+<link rel="stylesheet" href="{{ url_for('static', filename='autocomplete/css/jquery.ui.all.css') }}" media="all" />
+
+<script src="{{ url_for('static', filename='autocomplete/js/jquery.ui.core.js') }}"></script>
+<script src="{{ url_for('static', filename='autocomplete/js/jquery.ui.widget.js') }}"></script>
+<script src="{{ url_for('static', filename='autocomplete/js/jquery.ui.position.js') }}"></script>
+<script src="{{ url_for('static', filename='autocomplete/js/jquery.ui.menu.js') }}"></script>
+<script src="{{ url_for('static', filename='autocomplete/js/jquery.ui.autocomplete.js') }}"></script>
+
 <div class="well">
     <form class="form-horizontal" autocomplete="off">
         <fieldset>
@@ -24,6 +32,13 @@
             <label class="control-label" for="realname">Realname:</label>
             <div class="controls">
                 <input type="text" id="realname" name="realname" />
+            </div>
+        </div>
+    
+        <div class="control-group">
+            <label class="control-label" for="higher">Higher:</label>
+            <div class="controls">
+                <input type="text" id="higher" name="higher" />
             </div>
         </div>
 
@@ -89,6 +104,23 @@
 <script src="{{ url_for('static', filename='jquery.colorAnimations.js') }}"></script>
 <script type="text/javascript">
 $(function(){
+    var cache = {};
+    $("#higher").autocomplete({
+        minLength: 2,
+        source: function(request, response) {
+            var term = request.term;
+            if (term in cache) {
+                response(cache[term]);
+                return;
+            }
+
+            $.getJSON('/getJsonUser', request, function(data, status, xhr) {
+                cache[term] = data;
+                response(data);
+            });
+        }
+    });
+
     $("#department").change(function() {
         var tmpObjSid = $('#position');
         tmpObjSid.empty();
@@ -141,12 +173,13 @@ $(function(){
             var position = $("#position").val();
             var password = $("#password").val();
             var qq = $("#qq").val();
-            
+            var higher = $("#higher").val();
+
             $.ajax({
                     url : "/user/do_add",
                     dataType : "json",
                     type : "post",
-                    data : {'realname' : realname, 'username' : username, 'mobile' : mobile, 'email' : email, 'qq' : qq, 'department' : department, 'position' : position, 'password' : password}
+                    data : {'realname' : realname, 'username' : username, 'mobile' : mobile, 'email' : email, 'qq' : qq, 'department' : department, 'position' : position, 'password' : password, 'higher' : higher}
                 }).done(function(result){
                         $("#user_add_msg").html(result.msg);
                         $("#user_add_notice").show();
